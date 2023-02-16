@@ -11,7 +11,7 @@ function App() {
   const [isLogged, setIsLogged] = useState(false);
 
   const handleSubmit = (e) => {
-    if (e.key !== 'Enter') return;
+    // if (e.key !== 'Enter') return;
 
     if (username === 'admin' && password === 'admin') {
       setIsLogged(true);
@@ -49,7 +49,6 @@ function App() {
                 value={username}
                 placeholder="Nhập vào Username"
                 onChange={(e) => setUsername(e.target.value)}
-                onKeyDown={handleSubmit}
               />
               <TextField
                 required
@@ -60,9 +59,13 @@ function App() {
                 type="password"
                 placeholder="Nhập vào Password"
                 onChange={(e) => setPassword(e.target.value)}
-                onKeyDown={handleSubmit}
               />
-              <Button variant="contained" fullWidth onClick={handleSubmit}>
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                onClick={handleSubmit}
+              >
                 Submit
               </Button>
             </Box>
