@@ -17,7 +17,7 @@ const Main = () => {
         model: 'text-davinci-003',
         prompt: `${question}`,
         temperature: 0.5,
-        max_tokens: 256,
+        max_tokens: 300,
         top_p: 1,
         frequency_penalty: 0,
         presence_penalty: 0,
@@ -35,9 +35,9 @@ const Main = () => {
 
       const data = await response.json();
 
-      console.log(data);
+      console.log(data.choices[0].text.trim().replace(/\n{2,}\s*/g, '\n'));
 
-      setAnswer(data.choices[0].text.trim());
+      setAnswer(data.choices[0].text.trim().replace(/\n{2,}\s*/g, '\n'));
       setTokenCount(data.usage.total_tokens);
 
       setLoading(false);
@@ -68,7 +68,7 @@ const Main = () => {
       <h1>Hỏi đáp ChatGPT</h1>
       <h4 style={{ marginTop: '10px' }}>
         Lưu ý: Nếu hỏi bằng tiếng Việt và câu trả lời dài thì sẽ tốn nhiều
-        token, max token hiện tại đang là 256
+        token, max token hiện tại đang là 300
       </h4>
       <Box
         component="form"
@@ -79,7 +79,7 @@ const Main = () => {
           marginBottom: 2,
           marginTop: 4,
           width: '100%',
-          gap: 4,
+          gap: 3,
         }}
         noValidate
         autoComplete="off"
@@ -87,6 +87,7 @@ const Main = () => {
         <TextField
           required
           fullWidth
+          error={question === undefined || question === ''}
           id="outlined-multiline-flexible"
           label="Câu hỏi của bạn"
           multiline
@@ -100,9 +101,10 @@ const Main = () => {
           id="outlined-multiline-flexible"
           label="Câu trả lời của ChatGPT"
           multiline
-          rows={6}
+          rows={7}
           placeholder="Câu trả lời của ChatGPT sẽ hiện ở đây"
-          value={answer}
+          value={loading ? 'Đang xử lý...' : answer}
+          disabled={loading}
           InputProps={{
             readOnly: true,
           }}
